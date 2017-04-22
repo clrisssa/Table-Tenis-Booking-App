@@ -15,7 +15,7 @@ public class Booking {
     private String startTime;
     private String endTime;
     
-    public Booking(String username, String Date, String startTime, String endTime){
+    public Booking(String username, String date, String startTime, String endTime){
         this.username = username;
         this.date = date;
         this.startTime = startTime;
@@ -36,6 +36,22 @@ public class Booking {
 
     public String getEndTime() {
         return endTime;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
     
 }

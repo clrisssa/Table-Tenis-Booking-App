@@ -14,7 +14,11 @@
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <title>Log In Page</title>
     </head>
-    <body>
+    <body background="img/home.jpg" style="background-size:100%">
+        <div class="display-1 text-center">
+            
+            <h1><font color='white'>Table Tennis Booking App</font></h1>
+        </div>    
          <%
             //if already logged in, redirect to respect homepage  
             if (session.getAttribute("userSession") != null) {
@@ -27,21 +31,20 @@
         <div class = 'container'>
             <form action = "LoginController" method = "post">
                 <div class="form-group">
-                    <label for="usr">Username:</label>
+                    <label for="usr"><font color='white'>Username:</font></label>
                     <input type="text" class="form-control" name="username" required >
                 </div>
                 <div class="form-group">
-                    <label for="pwd">Password:</label>
+                    <label for="pwd"><font color='white'>Password:</font></label>
                     <input type="password" class="form-control" name="password" required >
                 </div>
 
+                <button type="submit" class="btn btn-success">Log In</button><br/>
                 
+            </form>
+            <br/>
+             
 
-                <br>
-                <br>
-
-                <button type="submit" class="btn btn-primary btn-md">Log In</button>
-                
                 <%
                     String loginError = (String)session.getAttribute("loginError");
                     if(loginError!=null){

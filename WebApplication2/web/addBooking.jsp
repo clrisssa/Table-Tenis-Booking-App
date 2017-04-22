@@ -92,7 +92,7 @@
               System.out.println("DayBookings: " + bookingsOnTheDay);
               if(bookingsOnTheDay != null && !bookingsOnTheDay.isEmpty()){
                   
-                out.println("There are some existing bookings on " +tempDate + ":");
+                out.println("There are some existing bookings made by you or other users on " +tempDate + ":");
                     out.println("<table class='table table-bordered' >");
                     out.println("<tr style='text-align:center ; background-color:#B8B8B8'>");
                     out.println("<th>Start Time</th>");
@@ -112,7 +112,7 @@
                     session.removeAttribute("tempDate");
                 }else{ 
                   if(tempDate!=null && !tempDate.equals("")){
-                    out.println("<font color = 'green'> There is no existing bookings on " + tempDate + "</font>");
+                    out.println("<font color = 'green'> There is no existing bookings made by other users on " + tempDate + "</font>");
                     out.println("<p class = small> Feel free to book anytime on this date! </p>");
 
                     session.removeAttribute("tempDate");

@@ -94,4 +94,41 @@ public class BookingDAO {
             }
         }
     }
+    
+    public static ArrayList<Booking> getBookingsByUsername(String username) {
+        ArrayList<Booking> bookings = new ArrayList<>();
+        Connection conn = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Booking where username = ?");
+            
+            stmt.setString(1, username);
+            
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                rs.getString(1);
+                String date = rs.getString(2);
+                String startTime = rs.getString(3);
+                String endTime = rs.getString(4);
+                System.out.println("DATE: " + date);
+                Booking booking = new Booking(username, date, startTime, endTime);
+                System.out.println("DATE3: " + booking.getDate());
+                bookings.add(booking);
+            }
+            return bookings;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
