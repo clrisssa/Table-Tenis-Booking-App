@@ -5,6 +5,12 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="MODEL.*"%>
+<%@page import="DAO.*"%>
+
+
+
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
 <!DOCTYPE html>
@@ -37,12 +43,24 @@
 
             </div>
         </nav>
+        <div class="page-header">
+            <h1>Book A Table</h1>
+        </div>        
         <div class ="col-md-6">
             <form action="AddBookingController" method="post">
 
                 <div class="form-group">
                     <label for="sel1">Date: </label>
-                    <input type="date" name="date"/><br/>
+                    <input type="date" name="date" id="date"
+                               <%String 
+                                tempDate = (String)session.getAttribute("tempDate");
+                               System.out.println("tempDate: " + tempDate);
+                                if(tempDate!=null){
+                                    
+                                       out.println("value =" + tempDate);
+                                   }%>
+                    />
+                    <button type="submit" name="button" class="btn btn-default" value="submitDate">Select Date</button><br/>
                     
                     <label for="sel1">Time: </label>
                     <input type ="time" name="time"/><br/>
@@ -54,8 +72,10 @@
                             <input type="radio" name="duration" value="40">40
                             <input type="radio" name="duration" value="50">50
                             <input type="radio" name="duration" value="60">60
-                    minutes
-                    <button type='submit' name='button' value='Submit Bid' class='btn btn-primary btn-lg btn-block' style='width:25%'>Book</button>
+                    minutes<br/>
+                    <p class="small">P.S. There has to be at least 30min interval between each of the bookings</p>
+                    
+                    <button type='submit' name='button' value='submitBooking' class='btn btn-primary btn-lg btn-block' style='width:25%'>Book</button>
                 </div>
                 <%
                     String bookingError = (String)session.getAttribute("bookingError");
@@ -71,9 +91,38 @@
                 
         %> 
         </div>
-        
-        
- 
+        <div class="container">
+        <div class="col-md-6">
+            
+            <%
+              ArrayList<Booking> bookingsOnTheDay = (ArrayList<Booking>)session.getAttribute("BookingsOnTheDay");
+              System.out.println("DayBookings: " + bookingsOnTheDay);
+              if(bookingsOnTheDay != null && !bookingsOnTheDay.isEmpty()){
+                  
+                out.println("Existing Bookings on " +tempDate);
+                    out.println("<table class='table table-bordered' >");
+                    out.println("<tr style='text-align:center ; background-color:#B8B8B8'>");
+                    out.println("<th>Start Time</th>");
+                    out.println("<th>End Time</th>");
+                    out.println("<th>Booked By</th>");
+                    out.println("</tr>");
+                    
+                    for(Booking b : bookingsOnTheDay){
+                        
+                        out.println("<tr>"
+                                + "<td>" + b.getStartTime() + "</td>"
+                                + "<td>" + b.getEndTime() + "</td>"
+                                + "<td>" + b.getUsername() + "</td>");
+                    }
+                    out.println("</table>");
+                    session.removeAttribute("BookingsOnTheDay");
+                    session.removeAttribute("tempDate");
+                }  
+                
+            %>
+        </div>
+        </div>
+        </p>
    </div>
 </body>
 </html>
