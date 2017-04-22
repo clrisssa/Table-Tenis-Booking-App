@@ -54,11 +54,22 @@ public class AddBookingController extends HttpServlet {
         //if booking is submitted
         if (value.equals("submitBooking")) {
 
-
+            //redirect back to the booking page if there is an unfilled field
             String dateStr = request.getParameter("date");
             String startTimeStr = request.getParameter("time");
             Long duration = Long.parseLong(request.getParameter("duration"));
-
+            if(dateStr == null || dateStr.equals("")){
+                session.setAttribute("bookingError","Invalid input");
+                response.sendRedirect("addBooking.jsp");
+            }
+            if(startTimeStr == null || startTimeStr.equals("")){
+                session.setAttribute("bookingError","Invalid input");
+                response.sendRedirect("addBooking.jsp");
+            }
+            if(duration == null || duration.equals("")){
+                session.setAttribute("bookingError","Invalid input");
+                response.sendRedirect("addBooking.jsp");
+            }
             //booking time and date converted to local time and date format
             LocalDate date = LocalDate.parse(dateStr);
             LocalTime startTime = LocalTime.parse(startTimeStr);
@@ -105,7 +116,7 @@ public class AddBookingController extends HttpServlet {
 
                     }
                 }else{
-                    session.setAttribute("bookingSuccessful","Booking successful");
+                    session.setAttribute("bookingSuccessful","Booking is successful");
                     Employee employee = (Employee) session.getAttribute("userSession");
                     String username = employee.getUsername();
                     //add the booking details to the database 

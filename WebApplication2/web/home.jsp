@@ -26,14 +26,7 @@
                 </div>
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="home.jsp">Home</a></li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage Bookings
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="addBooking.jsp">Book a Table</a></li>
-                            <li><a href="cancelBooking.jsp">Cancel a Booking</a></li>
-                        </ul>
-                    </li>
+                    <li><a href="addBooking.jsp" >Add Booking</a></li>
                     <li><a href="viewBooking.jsp">Booking History</a></li> 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

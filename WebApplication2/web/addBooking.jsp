@@ -9,7 +9,7 @@
 <%@page import="MODEL.*"%>
 <%@page import="DAO.*"%>
 
-
+<%@include file = "protect.jsp" %> 
 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
@@ -23,18 +23,11 @@
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="home.jsp">Table Tennis Booking</a>
+                    <a class="navbar-brand" href="home.jsp">Table Tennis Booking App</a>
                 </div>
                 <ul class="nav navbar-nav">
                     <li><a href="home.jsp">Home</a></li>
-                    <li class="active" class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage Bookings
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="addBooking.jsp">Book a Table</a></li>
-                            <li><a href="cancelBooking.jsp">Cancel a Booking</a></li>
-                        </ul>
-                    </li>
+                    <li class="active"><a href="addBooking.jsp" >Add Booking</a></li>
                     <li><a href="viewBooking.jsp">Booking History</a></li> 
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -99,7 +92,7 @@
               System.out.println("DayBookings: " + bookingsOnTheDay);
               if(bookingsOnTheDay != null && !bookingsOnTheDay.isEmpty()){
                   
-                out.println("Existing Bookings on " +tempDate);
+                out.println("There are some existing bookings on " +tempDate + ":");
                     out.println("<table class='table table-bordered' >");
                     out.println("<tr style='text-align:center ; background-color:#B8B8B8'>");
                     out.println("<th>Start Time</th>");
@@ -117,12 +110,19 @@
                     out.println("</table>");
                     session.removeAttribute("BookingsOnTheDay");
                     session.removeAttribute("tempDate");
-                }  
+                }else{ 
+                  if(tempDate!=null && !tempDate.equals("")){
+                    out.println("<font color = 'green'> There is no existing bookings on " + tempDate + "</font>");
+                    out.println("<p class = small> Feel free to book anytime on this date! </p>");
+
+                    session.removeAttribute("tempDate");
+
+                  }
+              }
                 
             %>
         </div>
         </div>
-        </p>
-   </div>
+        
 </body>
 </html>
