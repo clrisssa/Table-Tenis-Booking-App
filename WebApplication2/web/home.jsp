@@ -5,13 +5,56 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.text.DecimalFormat"%>
+<%@page import="MODEL.Employee"%>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!DOCTYPE html>
+<%@include file = "protect.jsp" %> 
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <title>Table Tennis Booking</title>
     </head>
-    <body>
-        <h1>Hello World!</h1>
+    <body background="img/BIOS_Student_Wallpaper.jpg" style="background-size:100%">
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="studentHome.jsp">Table Tennis Booking</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="studentHome.jsp">Home</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Manage Bookings
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="addBooking.jsp">Book a Table</a></li>
+                            <li><a href="cancelBooking.jsp">Cancel a Booking</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="dropSection.jsp">Booking History</a></li> 
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="logout.jsp"><span class="glyphicon glyphicon-log-out"></span> Sign Out</a></li>
+                </ul>
+
+            </div>
+        </nav>
+
+        <%            
+            Employee employee = (Employee) session.getAttribute("userSession");
+            String name = employee.getName();
+            
+        %>
+            <div class="container">
+        <div class="panel panel-primary">
+
+            <div class="panel-heading"><b>Welcome to Table Tennis Booking App, <%=name%> </b></div>
+                
+        </div>
+            </div>
+
     </body>
 </html>
