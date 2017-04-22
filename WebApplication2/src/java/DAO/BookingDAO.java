@@ -8,8 +8,11 @@ package DAO;
 import UTILITY.ConnectionManager;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.util.ArrayList;
+import MODEL.*;
+import java.time.*;
 /**
  *
  * @author Clarissa Poedjiono
@@ -25,7 +28,7 @@ public class BookingDAO {
 
             //insert bid to database
             stmt = conn.prepareStatement("Insert into booking values (?, ?, ?, ?)");
-
+            
             //set username
             stmt.setString(1, username);
 
@@ -38,7 +41,7 @@ public class BookingDAO {
             //set booking end time
             stmt.setString(4, endTime);
             int numRecordsUpdated = stmt.executeUpdate();
-
+            System.out.println("database updated");
 
 
         } catch (SQLException e) {
@@ -56,5 +59,39 @@ public class BookingDAO {
             }
         }
     }
-    
+    public static ArrayList<Booking> getBookingsByDate(String date) {
+        ArrayList<Booking> bookings = new ArrayList<>();
+        Connection conn = null;
+
+        try {
+            conn = ConnectionManager.getConnection();
+            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM Booking where date = ?");
+            
+            stmt.setString(1, date);
+            
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                String username = rs.getString(1);
+                rs.getString(2);
+                String startTime = rs.getString(3);
+                String endTime = rs.getString(4);
+
+                Booking booking = new Booking(username, date, startTime, endTime);
+                bookings.add(booking);
+            }
+            return bookings;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

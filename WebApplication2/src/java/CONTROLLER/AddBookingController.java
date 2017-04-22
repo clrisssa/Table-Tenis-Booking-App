@@ -13,9 +13,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import MODEL.Employee;
+import MODEL.*;
 import DAO.BookingDAO;
 import java.time.*;
+import java.util.ArrayList;
 /**
  *
  * @author Clarissa Poedjiono
@@ -37,24 +38,75 @@ public class AddBookingController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         
         HttpSession session = request.getSession();
-
-        String date = request.getParameter("date");
+        
+        String dateStr = request.getParameter("date");
         String startTimeStr = request.getParameter("time");
         Long duration = Long.parseLong(request.getParameter("duration"));
         
+        //booking time and date converted to local time and date format
+        LocalDate date = LocalDate.parse(dateStr);
         LocalTime startTime = LocalTime.parse(startTimeStr);
         LocalTime endTime = startTime.plusMinutes(duration);
         
-        System.out.println(date);
-        System.out.println(startTime);
-        System.out.println(endTime);
+        System.out.println("Date: " + date);
+        System.out.println("Time: " + startTime);
         
-        LocalTime now = LocalTime.now();
-        System.out.println(now);
-        Employee employee = (Employee) session.getAttribute("userSession");
-        String username = employee.getUsername();
+        LocalDate currentDate = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
         
-        BookingDAO.addBooking(username, date, ""+startTime, ""+endTime);
+        System.out.println("Current Date: " + currentDate);
+        System.out.println("Current Time: " + currentTime);
+        //booking should be >= current date
+        boolean afterCurrentTime = false;
+        if(!date.isBefore(currentDate)){
+            //booking should be >= current time
+            afterCurrentTime = true;
+        }
+        if(date.equals(currentDate)){
+            if(!startTime.isBefore(currentTime)){
+                afterCurrentTime = true;
+            }
+        }
+        if(afterCurrentTime){
+            //check if slot is available if time input is valid
+            System.out.println("Time input is valid");
+            ArrayList<Booking> bookings = BookingDAO.getBookingsByDate(dateStr);
+            if(!bookings.isEmpty() && bookings!=null){
+                for(Booking booking: bookings){
+                    LocalTime bStartTime = LocalTime.parse(booking.getStartTime()).minusMinutes(30);
+                    LocalTime bEndTime = LocalTime.parse(booking.getEndTime()).plusMinutes(30);
+                    if((bStartTime.isAfter(endTime)||bStartTime.equals(endTime))||(bEndTime.isBefore(startTime)||bEndTime.equals(startTime))){
+                        Employee employee = (Employee) session.getAttribute("userSession");
+                        String username = employee.getUsername();
+                        //add the booking details to the database 
+                        BookingDAO.addBooking(username, dateStr, ""+startTime, ""+endTime);
+                    }else{
+                        session.setAttribute("bookingError", "Booking time clashes with an existing booking");
+                        response.sendRedirect("addBooking.jsp");
+
+                        System.out.println("Booking clashes");
+                    }            
+
+                }
+            }else{
+                session.setAttribute("bookingSuccessful","Booking successful");
+                Employee employee = (Employee) session.getAttribute("userSession");
+                String username = employee.getUsername();
+                //add the booking details to the database 
+                BookingDAO.addBooking(username, dateStr, ""+startTime, ""+endTime);
+                response.sendRedirect("addBooking.jsp");
+
+            }
+            
+        }else{
+            session.setAttribute("bookingError", "Invalid booking time");
+            response.sendRedirect("addBooking.jsp");
+
+            System.out.println("Invalid booking time");
+        }
+        
+        
+        
         
     }
 

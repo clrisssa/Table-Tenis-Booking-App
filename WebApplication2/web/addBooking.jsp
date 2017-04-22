@@ -37,7 +37,7 @@
 
             </div>
         </nav>
-        <div class ="container">
+        <div class ="col-md-6">
             <form action="AddBookingController" method="post">
 
                 <div class="form-group">
@@ -56,7 +56,23 @@
                             <input type="radio" name="duration" value="60">60
                     minutes
                     <button type='submit' name='button' value='Submit Bid' class='btn btn-primary btn-lg btn-block' style='width:25%'>Book</button>
-                    
+                </div>
+                <%
+                    String bookingError = (String)session.getAttribute("bookingError");
+                    if(bookingError!=null){
+                        out.println("<font color = 'red'>" + bookingError + "</font> ");
+                        session.removeAttribute("bookingError");
+                    }
+                    String bookingSuccess = (String)session.getAttribute("bookingSuccessful");
+                    if(bookingSuccess!=null){
+                        out.println("<font color = 'green'>" + bookingSuccess + "</font> ");
+                        session.removeAttribute("bookingSuccessful");
+                    }
+                
+        %> 
+        </div>
+        
+        
  
    </div>
 </body>
